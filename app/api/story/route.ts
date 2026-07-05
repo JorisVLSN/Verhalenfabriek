@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
     const result = await genAI.models.generateContentStream({
       model: "gemini-2.5-flash",
       contents,
-      generationConfig: {
+      config: {
         temperature: 0.9,
         maxOutputTokens: 400,
         topP: 0.95,
