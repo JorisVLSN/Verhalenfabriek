@@ -3,11 +3,13 @@ import { GoogleGenAI } from "@google/genai";
 import { children } from "@/lib/children";
 import { professorPluisSystemPrompt } from "@/lib/professor-pluis";
 
-const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+const genAI = new GoogleGenAI({
+  apiKey: process.env.GOOGLE_API_KEY,
+});
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, childId, phase } = await req.json();
+    const { messages, childId } = await req.json();
 
     const child = children.find((c) => c.id === childId) ?? children[0];
 
@@ -17,31 +19,29 @@ export async function POST(req: NextRequest) {
       child.style
     );
 
-    // Bouw de conversatie op voor Gemini
-    const contents = [];
-
-    // System prompt als eerste user message (Gemini heeft geen aparte system role)
-    contents.push({
-      role: "user",
-      parts: [{ text: systemPrompt + "
-
-/n/nDit is jouw rol. Beantwoord nu het volgende:" }]
-    });
-
-    contents.push({
-      role: "model",
-      parts: [{ text: "Begrepen! Ik ben Professor Pluis en ik help graag met het maken van magische verhalen." }]
-    });
-
-    // Voeg de gespreksgeschiedenis toe
-    for (const msg of messages) {
-      contents.push({
+    const contents = [
+      {
+        role: "user",
+        parts: [
+          {
+            text: `${systemPrompt}\n\nDit is jouw rol. Beantwoord nu het volgende:`,
+          },
+        ],
+      },
+      {
+        role: "model",
+        parts: [
+          {
+            text: "Begrepen! Ik ben Professor Pluis en ik help graag met het maken van magische verhalen.",
+          },
+        ],
+      },
+      ...messages.map((msg: { role: string; content: string }) => ({
         role: msg.role === "user" ? "user" : "model",
-        parts: [{ text: msg.content }]
-      });
-    }
+        parts: [{ text: msg.content }],
+      })),
+    ];
 
-    // Genereer streaming response
     const result = await genAI.models.generateContentStream({
       model: "gemini-2.5-flash",
       contents,
@@ -52,23 +52,23 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Stream de response terug
     const encoder = new TextEncoder();
+
     const stream = new ReadableStream({
       async start(controller) {
         try {
           for await (const chunk of result) {
             const text = chunk.text;
+
             if (text) {
               controller.enqueue(
-                encoder.encode(`data: ${JSON.stringify({ text })}
-
-`)
+                encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
               );
             }
           }
+
           controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-controller.close();
+          controller.close();
         } catch (error) {
           controller.error(error);
         }
@@ -84,8 +84,12 @@ controller.close();
     });
   } catch (error) {
     console.error("Story generation error:", error);
+
     return Response.json(
-      { error: "Professor Pluis is even bezig met haar toverstaf. Probeer het opnieuw! ✨" },
+      {
+        error:
+          "Professor Pluis is even bezig met haar toverstaf. Probeer het opnieuw! ✨",
+      },
       { status: 500 }
     );
   }
