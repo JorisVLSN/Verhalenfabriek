@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       role: "user",
       parts: [{ text: systemPrompt + "
 
-Dit is jouw rol. Beantwoord nu het volgende:" }]
+/n/nDit is jouw rol. Beantwoord nu het volgende:" }]
     });
 
     contents.push({
