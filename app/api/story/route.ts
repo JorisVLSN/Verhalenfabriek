@@ -67,10 +67,8 @@ Dit is jouw rol. Beantwoord nu het volgende:" }]
               );
             }
           }
-          controller.enqueue(encoder.encode("data: [DONE]
-
-"));
-          controller.close();
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+controller.close();
         } catch (error) {
           controller.error(error);
         }
