@@ -9,6 +9,10 @@ import { storyPhases, StoryPhase } from "@/lib/professor-pluis";
 import { Sparkles, Send, ArrowLeft, Loader2 } from "lucide-react";
 import { ProfessorPluisAvatar } from "@/components/professor-pluis-portrait";
 import {
+  ReadAloudButton,
+  VoiceAnswerButton,
+} from "@/components/story-accessibility";
+import {
   createStoryTitle,
   saveStoredStory,
 } from "@/lib/story-storage";
@@ -45,6 +49,8 @@ function StoryContent() {
   const storyCreatedAtRef = useRef<string | null>(null);
   const [storyStarted, setStoryStarted] = useState(false);
   const [savedAt, setSavedAt] = useState<string | null>(null);
+  const canListen = child.id === "pauline" || child.id === "mats";
+  const canAnswerWithVoice = child.id === "mats";
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -436,6 +442,9 @@ function StoryContent() {
                             </span>
                           )}
                         </div>
+                        {msg.role === "assistant" && msg.content && canListen && (
+                          <ReadAloudButton text={msg.content} />
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -472,12 +481,22 @@ function StoryContent() {
 
               {/* Input */}
               <div className="flex gap-3 pt-4 border-t-2 border-purple-100">
+                {canAnswerWithVoice && (
+                  <VoiceAnswerButton
+                    disabled={isLoading || showChoices}
+                    onTranscript={setInput}
+                  />
+                )}
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Typ jouw idee..."
+                  placeholder={
+                    canAnswerWithVoice
+                      ? "Vertel of typ jouw idee..."
+                      : "Typ jouw idee..."
+                  }
                   disabled={isLoading || showChoices}
                   className="flex-1 px-5 py-3 rounded-2xl border-2 border-purple-200 bg-white text-purple-700 placeholder-purple-300 outline-none focus:border-purple-500 focus:ring-4 focus:ring-purple-100 transition-all disabled:opacity-50"
                 />

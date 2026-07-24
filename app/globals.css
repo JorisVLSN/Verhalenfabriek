@@ -492,3 +492,78 @@
   border-bottom: max(1px, calc(var(--avatar-size) * .025)) solid #7d565c;
   border-radius: 50%;
 }
+
+/* Reading and speech controls for Pauline and Mats */
+.speech-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border: 1px solid #e7d5fa;
+  border-radius: 999px;
+  background: #faf5ff;
+  color: #7e4eb0;
+  font-size: .75rem;
+  font-weight: 900;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.speech-action:hover {
+  background: #f3e8ff;
+  transform: translateY(-1px);
+}
+
+.voice-answer-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 122px;
+  padding: 0 14px;
+  border: 2px solid #d8b4fe;
+  border-radius: 18px;
+  background: #faf5ff;
+  color: #7e22ce;
+  font-size: .84rem;
+  font-weight: 900;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.voice-answer-button:hover {
+  background: #f3e8ff;
+  transform: translateY(-1px);
+}
+
+.voice-answer-button.is-listening {
+  border-color: #ec4899;
+  background: #fce7f3;
+  color: #be185d;
+  box-shadow: 0 0 0 5px rgba(236, 72, 153, .12);
+}
+
+.voice-answer-button:disabled {
+  cursor: not-allowed;
+  opacity: .45;
+}
+
+.voice-not-supported {
+  align-self: center;
+  max-width: 110px;
+  color: #9b7aad;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+@media (max-width: 620px) {
+  .voice-answer-button {
+    min-width: 52px;
+    padding-inline: 13px;
+  }
+
+  .voice-answer-button span {
+    display: none;
+  }
+}
