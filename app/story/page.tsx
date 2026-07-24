@@ -8,6 +8,10 @@ import { children, Child } from "@/lib/children";
 import { storyPhases, StoryPhase } from "@/lib/professor-pluis";
 import { Sparkles, Send, ArrowLeft, Loader2 } from "lucide-react";
 import { ProfessorPluisAvatar } from "@/components/professor-pluis-portrait";
+import {
+  createStoryTitle,
+  saveStoredStory,
+} from "@/lib/story-storage";
 
 interface Message {
   id: string;
@@ -37,7 +41,10 @@ function StoryContent() {
   const [showChoices, setShowChoices] = useState(false);
   const [illustration, setIllustration] = useState({ emoji: "🏰", text: "De Verhalenfabriek", subtext: "Professor Pluis schudt wat sterrenstof..." });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const storyIdRef = useRef<string | null>(null);
+  const storyCreatedAtRef = useRef<string | null>(null);
   const [storyStarted, setStoryStarted] = useState(false);
+  const [savedAt, setSavedAt] = useState<string | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,6 +54,30 @@ function StoryContent() {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    if (!storyStarted || messages.length === 0 || !storyIdRef.current) return;
+
+    const timeout = window.setTimeout(() => {
+      const now = new Date().toISOString();
+      const storedMessages = messages
+        .filter((message) => message.content.trim())
+        .map(({ role, content }) => ({ role, content }));
+
+      saveStoredStory({
+        id: storyIdRef.current!,
+        childId: child.id,
+        title: createStoryTitle(child.name, storedMessages),
+        createdAt: storyCreatedAtRef.current ?? now,
+        updatedAt: now,
+        messages: storedMessages,
+      });
+
+      setSavedAt(now);
+    }, 350);
+
+    return () => window.clearTimeout(timeout);
+  }, [child.id, child.name, messages, storyStarted]);
+
   const generateId = () => Math.random().toString(36).substring(2, 9);
 
   const addMessage = (role: "user" | "assistant", content: string, phase?: number) => {
@@ -54,6 +85,10 @@ function StoryContent() {
   };
 
   const startAdventure = async () => {
+    const now = new Date().toISOString();
+    storyIdRef.current = crypto.randomUUID();
+    storyCreatedAtRef.current = now;
+    setSavedAt(null);
     setStoryStarted(true);
     setCurrentPhase(0);
     setMessages([]);
@@ -331,6 +366,11 @@ function StoryContent() {
 
         {/* Chat gebied */}
         <div className="bg-white/85 backdrop-blur-lg rounded-3xl p-6 shadow-xl shadow-purple-100 border-2 border-white/50">
+          {storyStarted && savedAt && (
+            <div className="mb-4 text-right text-xs font-bold text-purple-400">
+              Bewaard in {child.name} haar boekenplank
+            </div>
+          )}
           {!storyStarted ? (
             <div className="text-center py-12">
               <motion.div
