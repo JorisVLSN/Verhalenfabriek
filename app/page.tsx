@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpen, Sparkles } from "lucide-react";
+import { BookHeart, BookOpen, Sparkles } from "lucide-react";
 import { ProfessorPluisPortrait } from "@/components/professor-pluis-portrait";
 
 export default function Home() {
@@ -37,6 +37,10 @@ export default function Home() {
             <Link className="storybook-button storybook-button-secondary" href="/ontdekker?next=library">
               <BookOpen size={21} aria-hidden="true" />
               Mijn verhalen
+            </Link>
+            <Link className="storybook-button storybook-button-secondary" href="/vriendenboek">
+              <BookHeart size={21} aria-hidden="true" />
+              Ons vriendenboek
             </Link>
           </div>
 
