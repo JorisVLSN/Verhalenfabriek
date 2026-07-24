@@ -38,8 +38,13 @@ const discovererDetails: Record<
 
 export function DiscovererEntrance() {
   const searchParams = useSearchParams();
+  const requestedDestination = searchParams.get("next");
   const destination =
-    searchParams.get("next") === "library" ? "library" : "story";
+    requestedDestination === "library"
+      ? "library"
+      : requestedDestination === "courtyard"
+        ? "binnenplaats"
+        : "story";
   const [lastStories, setLastStories] = useState<Record<string, string>>({});
   const [showFirstVisitNote, setShowFirstVisitNote] = useState(false);
   const [quoteIndex, setQuoteIndex] = useState(0);

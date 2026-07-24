@@ -12,6 +12,9 @@ export interface StoredStory {
   messages: StoredStoryMessage[];
   currentPhase?: number;
   residentId?: string;
+  source?: "created" | "courtyard-daily";
+  dailyDateKey?: string;
+  dailySignature?: string;
 }
 
 const STORAGE_KEY = "verhalenfabriek:stories:v1";
