@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { children } from "@/lib/children";
 import { professorPluisSystemPrompt } from "@/lib/professor-pluis";
+import { getResident } from "@/lib/residents";
 
 const genAI = new GoogleGenAI({
   apiKey: process.env.GOOGLE_API_KEY,
@@ -9,7 +10,7 @@ const genAI = new GoogleGenAI({
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, childId } = await req.json();
+    const { messages, childId, residentId } = await req.json();
 
     const child = children.find((c) => c.id === childId) ?? children[0];
 
@@ -18,13 +19,17 @@ export async function POST(req: NextRequest) {
       child.age,
       child.style
     );
+    const resident = getResident(residentId);
+    const residentPrompt = resident
+      ? `\n\nVASTE VERHAALVRIEND:\n${resident.name} gaat vandaag mee als helper.\n${resident.storyRole}\nLaat ${resident.name} herkenbaar meedoen, maar laat het kind altijd de held en beslisser blijven.`
+      : "";
 
     const contents = [
       {
         role: "user",
         parts: [
           {
-            text: `${systemPrompt}\n\nDit is jouw rol. Beantwoord nu het volgende:`,
+            text: `${systemPrompt}${residentPrompt}\n\nDit is jouw rol. Beantwoord nu het volgende:`,
           },
         ],
       },

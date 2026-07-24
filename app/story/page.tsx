@@ -16,6 +16,7 @@ import {
   createStoryTitle,
   saveStoredStory,
 } from "@/lib/story-storage";
+import { residents, Resident } from "@/lib/residents";
 
 interface Message {
   id: string;
@@ -48,6 +49,8 @@ function StoryContent() {
   const storyIdRef = useRef<string | null>(null);
   const storyCreatedAtRef = useRef<string | null>(null);
   const [storyStarted, setStoryStarted] = useState(false);
+  const [showResidentPicker, setShowResidentPicker] = useState(false);
+  const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const canListen = child.id === "pauline" || child.id === "mats";
   const canAnswerWithVoice = child.id === "mats";
@@ -90,10 +93,16 @@ function StoryContent() {
     setMessages((prev) => [...prev, { id: generateId(), role, content, phase }]);
   };
 
-  const startAdventure = async () => {
+  const startAdventure = () => {
+    setShowResidentPicker(true);
+  };
+
+  const startAdventureWithResident = (resident: Resident) => {
     const now = new Date().toISOString();
     storyIdRef.current = crypto.randomUUID();
     storyCreatedAtRef.current = now;
+    setSelectedResident(resident);
+    setShowResidentPicker(false);
     setSavedAt(null);
     setStoryStarted(true);
     setCurrentPhase(0);
@@ -101,7 +110,7 @@ function StoryContent() {
     setSparkles(child.sparkles);
 
     // Welkomstbericht van Professor Pluis
-    const welcomeMsg = `Ik heb stiekem al op je gewacht, ${child.name}. Er is vannacht iets vreemds gebeurd in de Verhalenfabriek... Er is een verhaal aangekomen zonder held! Wil jij me helpen?`;
+    const welcomeMsg = `Ik heb stiekem al op je gewacht, ${child.name}. ${resident.name} gaat vandaag met ons mee. Er is vannacht iets vreemds gebeurd in de Verhalenfabriek... Er is een verhaal aangekomen zonder held! Wil jij me helpen?`;
 
     addMessage("assistant", welcomeMsg, 0);
     setIllustration({ emoji: "🏰", text: "De Verhalenfabriek", subtext: "Professor Pluis schudt wat sterrenstof..." });
@@ -131,6 +140,7 @@ function StoryContent() {
             content: m.content
           })),
           childId: child.id,
+          residentId: selectedResident?.id,
           phase: currentPhase,
         }),
       });
@@ -374,7 +384,7 @@ function StoryContent() {
               Bewaard in {child.name} haar boekenplank
             </div>
           )}
-          {!storyStarted ? (
+          {!storyStarted && !showResidentPicker ? (
             <div className="text-center py-12">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -399,10 +409,60 @@ function StoryContent() {
                 ✨ Begin het avontuur
               </motion.button>
             </div>
+          ) : showResidentPicker ? (
+            <div className="py-4">
+              <div className="text-center mb-7">
+                <h2 className="text-2xl font-black text-purple-700 mb-2">
+                  Wie gaat vandaag met ons mee?
+                </h2>
+                <p className="text-purple-500">
+                  Kies een vriend uit de Verhalenfabriek.
+                </p>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {residents.map((resident) => (
+                  <motion.button
+                    key={resident.id}
+                    type="button"
+                    whileHover={{ y: -3, scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => startAdventureWithResident(resident)}
+                    className="resident-card"
+                  >
+                    <span className="resident-card-emoji" aria-hidden="true">
+                      {resident.emoji}
+                    </span>
+                    <span>
+                      <span className="resident-card-name">{resident.name}</span>
+                      <span className="resident-card-description">
+                        {resident.shortDescription}
+                      </span>
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowResidentPicker(false)}
+                className="mx-auto mt-6 block font-bold text-purple-500 hover:text-purple-700"
+              >
+                ← Toch nog even terug
+              </button>
+            </div>
           ) : (
             <>
               {/* Berichten */}
               <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 mb-4">
+                {selectedResident && (
+                  <div className="resident-companion">
+                    <span aria-hidden="true">{selectedResident.emoji}</span>
+                    <span>
+                      Vandaag helpt <strong>{selectedResident.name}</strong> mee
+                    </span>
+                  </div>
+                )}
                 <AnimatePresence>
                   {messages.map((msg) => (
                     <motion.div

@@ -567,3 +567,61 @@
     display: none;
   }
 }
+.resident-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid rgb(233 213 255);
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #fff 0%, #faf5ff 100%);
+  color: #6b21a8;
+  text-align: left;
+  box-shadow: 0 8px 24px rgb(126 34 206 / 8%);
+}
+
+.resident-card:hover {
+  border-color: rgb(192 132 252);
+}
+
+.resident-card-emoji {
+  display: grid;
+  place-items: center;
+  flex: 0 0 3.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: #f3e8ff;
+  font-size: 2rem;
+}
+
+.resident-card-name,
+.resident-card-description {
+  display: block;
+}
+
+.resident-card-name {
+  margin-bottom: 0.2rem;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.resident-card-description {
+  color: #a855f7;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.resident-companion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  background: #faf5ff;
+  color: #9333ea;
+  font-size: 0.9rem;
+}
