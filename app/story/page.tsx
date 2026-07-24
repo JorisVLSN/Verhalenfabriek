@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { children, Child } from "@/lib/children";
@@ -17,8 +17,16 @@ interface Message {
 
 function StoryContent() {
   const searchParams = useSearchParams();
-  const childId = searchParams.get("child") ?? "mila";
-  const child = children.find((c) => c.id === childId) ?? children[0];
+  const router = useRouter();
+  const childId = searchParams.get("child");
+  const selectedChild = children.find((c) => c.id === childId);
+  const child = selectedChild ?? children[0];
+
+  useEffect(() => {
+    if (!selectedChild) {
+      router.replace("/ontdekker?next=story");
+    }
+  }, [selectedChild, router]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -176,6 +184,10 @@ function StoryContent() {
     { text: "Het avontuurlijke pad", emoji: "⚔️" },
     { text: "Iets totaal anders bedenken", emoji: "✨" },
   ];
+
+  if (!selectedChild) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen p-4 md:p-6">

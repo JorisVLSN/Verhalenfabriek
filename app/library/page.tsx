@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, BookOpen, Calendar } from "lucide-react";
+import { children } from "@/lib/children";
 
 interface Story {
   id: string;
@@ -23,8 +25,14 @@ const demoStories: Story[] = [
   { id: "6", title: "Poes Minoes Redt de Dag", emoji: "🐱", date: "2 weken geleden", childId: "ellie", preview: "Poes Minoes ontdekte dat ze kon vliegen en redde een nestje vogels..." },
 ];
 
-export default function LibraryPage() {
+function LibraryContent() {
+  const searchParams = useSearchParams();
+  const childId = searchParams.get("child");
+  const child = children.find((candidate) => candidate.id === childId);
   const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const visibleStories = child
+    ? demoStories.filter((story) => story.childId === child.id)
+    : demoStories;
 
   return (
     <main className="min-h-screen p-4 md:p-6">
@@ -54,7 +62,9 @@ export default function LibraryPage() {
           className="bg-white/85 backdrop-blur-lg rounded-3xl p-6 shadow-xl shadow-purple-100 border-2 border-white/50"
         >
           <p className="text-purple-500 mb-6 font-semibold">
-            Alle avonturen die je hebt beleefd met Professor Pluis.
+            {child
+              ? `Alle avonturen die ${child.name} met Professor Pluis heeft beleefd.`
+              : "Alle avonturen die je hebt beleefd met Professor Pluis."}
           </p>
 
           {selectedStory ? (
@@ -85,7 +95,7 @@ export default function LibraryPage() {
             </motion.div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {demoStories.map((story, index) => (
+              {visibleStories.map((story, index) => (
                 <motion.button
                   key={story.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -111,5 +121,13 @@ export default function LibraryPage() {
         </motion.div>
       </div>
     </main>
+  );
+}
+
+export default function LibraryPage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen" />}>
+      <LibraryContent />
+    </Suspense>
   );
 }

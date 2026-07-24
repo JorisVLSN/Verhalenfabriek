@@ -30,11 +30,11 @@ export default function Home() {
           </p>
 
           <div className="storybook-actions">
-            <Link className="storybook-button storybook-button-primary" href="/story">
+            <Link className="storybook-button storybook-button-primary" href="/ontdekker?next=story">
               <Sparkles size={21} aria-hidden="true" />
               Samen een verhaal maken
             </Link>
-            <Link className="storybook-button storybook-button-secondary" href="/library">
+            <Link className="storybook-button storybook-button-secondary" href="/ontdekker?next=library">
               <BookOpen size={21} aria-hidden="true" />
               Mijn verhalen
             </Link>

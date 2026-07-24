@@ -40,6 +40,19 @@ export const children: Child[] = [
     preferences: { football: 4, adventure: 3, animals: 2 }
   },
   {
+    id: "pauline",
+    name: "Pauline",
+    age: 8,
+    avatar: "P",
+    style: "rustig tempo, korte stukjes, eenvoudige woorden en veel visuele steun",
+    themes: ["dieren", "fantasie", "vriendschap"],
+    readingLevel: "rustig en leesvriendelijk",
+    sparkles: 0,
+    storiesCompleted: 0,
+    favoriteCharacter: "Professor Pluis",
+    preferences: { animals: 4, fantasy: 4, friendship: 5 }
+  },
+  {
     id: "mats",
     name: "Mats",
     age: 4,
