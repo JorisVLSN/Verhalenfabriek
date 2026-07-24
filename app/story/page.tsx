@@ -137,48 +137,25 @@ function StoryContent() {
 
       if (!response.ok) throw new Error("API error");
 
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let fullText = "";
-      let streamBuffer = "";
       const messageId = generateId();
 
-      // Voeg placeholder toe voor streaming
+      // Toon een tijdelijke denk-indicator terwijl Professor Pluis antwoordt.
       setMessages((prev) => [...prev, { id: messageId, role: "assistant", content: "", phase: currentPhase }]);
 
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+      const data = (await response.json()) as { text?: string };
+      const fullText = data.text?.replace(/\*+/g, "").trim();
 
-          streamBuffer += decoder.decode(value, { stream: true });
-
-          let eventBoundary = streamBuffer.indexOf("\n\n");
-          while (eventBoundary !== -1) {
-            const event = streamBuffer.slice(0, eventBoundary);
-            streamBuffer = streamBuffer.slice(eventBoundary + 2);
-
-            const dataLine = event
-              .split("\n")
-              .find((line) => line.startsWith("data: "));
-            const data = dataLine?.slice(6);
-
-            if (data && data !== "[DONE]") {
-              const parsed = JSON.parse(data);
-              if (parsed.text) {
-                fullText += parsed.text.replace(/\*+/g, "");
-                setMessages((prev) =>
-                  prev.map((m) =>
-                    m.id === messageId ? { ...m, content: fullText } : m
-                  )
-                );
-              }
-            }
-
-            eventBoundary = streamBuffer.indexOf("\n\n");
-          }
-        }
+      if (!fullText) {
+        throw new Error("Leeg antwoord ontvangen");
       }
+
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === messageId
+            ? { ...message, content: fullText }
+            : message
+        )
+      );
 
       // Update fase en vonkjes
       const newPhase = Math.min(currentPhase + 1, storyPhases.length - 1);
@@ -212,7 +189,27 @@ function StoryContent() {
 
     } catch (error) {
       console.error("Error:", error);
-      addMessage("assistant", "Oeps! Professor Pluis is haar toverstaf even kwijt. Kun je het nog een keer proberen? ✨", currentPhase);
+      setMessages((prev) => {
+        const withoutEmptyAssistant = prev.filter(
+          (message) =>
+            !(
+              message.role === "assistant" &&
+              message.content === "" &&
+              message.phase === currentPhase
+            )
+        );
+
+        return [
+          ...withoutEmptyAssistant,
+          {
+            id: generateId(),
+            role: "assistant",
+            content:
+              "Oeps! Professor Pluis is haar toverstaf even kwijt. Kun je het nog een keer proberen? ✨",
+            phase: currentPhase,
+          },
+        ];
+      });
     } finally {
       setIsLoading(false);
     }

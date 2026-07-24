@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       })),
     ];
 
-    const result = await genAI.models.generateContentStream({
+    const result = await genAI.models.generateContent({
       model: "gemini-2.5-flash",
       contents,
       config: {
@@ -52,36 +52,13 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    const encoder = new TextEncoder();
+    const text = result.text?.trim();
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of result) {
-            const text = chunk.text;
+    if (!text) {
+      throw new Error("Gemini returned an empty story response");
+    }
 
-            if (text) {
-              controller.enqueue(
-                encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
-              );
-            }
-          }
-
-          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
-          controller.close();
-        } catch (error) {
-          controller.error(error);
-        }
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
-      },
-    });
+    return Response.json({ text });
   } catch (error) {
     console.error("Story generation error:", error);
 
