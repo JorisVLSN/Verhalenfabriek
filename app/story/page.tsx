@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { children, Child } from "@/lib/children";
 import { storyPhases, StoryPhase } from "@/lib/professor-pluis";
 import { Sparkles, Send, ArrowLeft, Loader2 } from "lucide-react";
+import { ProfessorPluisAvatar } from "@/components/professor-pluis-portrait";
 
 interface Message {
   id: string;
@@ -59,7 +60,7 @@ function StoryContent() {
     setSparkles(child.sparkles);
 
     // Welkomstbericht van Professor Pluis
-    const welcomeMsg = `Hallo ${child.name}! Ik ben Professor Pluis. Er is vannacht iets vreemds gebeurd in de Verhalenfabriek... Er is een verhaal aangekomen zonder held! Wil jij me helpen om er een held van te maken?`;
+    const welcomeMsg = `Ik heb stiekem al op je gewacht, ${child.name}. Er is vannacht iets vreemds gebeurd in de Verhalenfabriek... Er is een verhaal aangekomen zonder held! Wil jij me helpen?`;
 
     addMessage("assistant", welcomeMsg, 0);
     setIllustration({ emoji: "🏰", text: "De Verhalenfabriek", subtext: "Professor Pluis schudt wat sterrenstof..." });
@@ -331,15 +332,16 @@ function StoryContent() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="text-6xl mb-6"
+                className="mb-7 flex justify-center"
               >
-                🦉
+                <ProfessorPluisAvatar size="large" />
               </motion.div>
               <h2 className="text-2xl font-bold text-purple-700 mb-4">
-                Professor Pluis wacht op je!
+                Ik heb stiekem al op je gewacht, {child.name}.
               </h2>
               <p className="text-purple-500 mb-8 max-w-md mx-auto">
-                Samen gaan jullie een magisch verhaal maken. Jij bent de verhalenmaker, {child.name}!
+                Er is een verhaal aangekomen dat nog een held mist. Zullen we
+                samen ontdekken hoe het begint?
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -365,8 +367,8 @@ function StoryContent() {
                       }`}
                     >
                       {msg.role === "assistant" && (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-200 to-pink-200 flex items-center justify-center text-xl mr-3 flex-shrink-0 animate-float">
-                          🦉
+                        <div className="mr-3 flex-shrink-0">
+                          <ProfessorPluisAvatar size="small" />
                         </div>
                       )}
                       <div
@@ -462,7 +464,7 @@ export default function StoryPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-4xl animate-bounce">🦉</div>
+        <ProfessorPluisAvatar size="medium" />
       </div>
     }>
       <StoryContent />

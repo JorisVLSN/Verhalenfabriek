@@ -43,3 +43,29 @@ export function ProfessorPluisPortrait() {
     </div>
   );
 }
+
+export function ProfessorPluisAvatar({
+  size = "medium",
+}: {
+  size?: "small" | "medium" | "large";
+}) {
+  return (
+    <span
+      className={`pluis-avatar pluis-avatar-${size}`}
+      role="img"
+      aria-label="Professor Pluis"
+    >
+      <span className="pluis-avatar-ear avatar-ear-left" aria-hidden="true" />
+      <span className="pluis-avatar-ear avatar-ear-right" aria-hidden="true" />
+      <span className="pluis-avatar-face" aria-hidden="true">
+        <span className="pluis-avatar-eye avatar-eye-left" />
+        <span className="pluis-avatar-eye avatar-eye-right" />
+        <span className="pluis-avatar-glasses avatar-glasses-left" />
+        <span className="pluis-avatar-glasses avatar-glasses-right" />
+        <span className="pluis-avatar-bridge" />
+        <span className="pluis-avatar-nose" />
+        <span className="pluis-avatar-smile" />
+      </span>
+    </span>
+  );
+}

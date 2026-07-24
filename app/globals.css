@@ -392,3 +392,103 @@
   .profile-avatar { width: 76px; height: 76px; font-size: 2rem; }
   .profile-name { font-size: 1.3rem; }
 }
+
+/* Reusable Professor Pluis cat avatar */
+.pluis-avatar {
+  --avatar-size: 64px;
+  position: relative;
+  display: inline-block;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex: 0 0 var(--avatar-size);
+}
+
+.pluis-avatar-small { --avatar-size: 42px; }
+.pluis-avatar-medium { --avatar-size: 64px; }
+.pluis-avatar-large { --avatar-size: 112px; }
+
+.pluis-avatar-ear {
+  position: absolute;
+  z-index: 0;
+  top: 1%;
+  width: 36%;
+  height: 38%;
+  background: #c99f82;
+  clip-path: polygon(50% 0, 100% 100%, 0 82%);
+}
+
+.avatar-ear-left { left: 5%; transform: rotate(-16deg); }
+.avatar-ear-right { right: 5%; transform: scaleX(-1) rotate(-16deg); }
+
+.pluis-avatar-face {
+  position: absolute;
+  z-index: 1;
+  inset: 13% 4% 2%;
+  border: max(2px, calc(var(--avatar-size) * .035)) solid rgba(92, 62, 65, .18);
+  border-radius: 49% 49% 46% 46%;
+  background:
+    radial-gradient(circle at 50% 70%, #eacbb3 0 25%, transparent 26%),
+    linear-gradient(145deg, #dfc0a5, #c99f82);
+  box-shadow:
+    inset calc(var(--avatar-size) * -.08) calc(var(--avatar-size) * -.04) 0 rgba(119, 76, 69, .1),
+    0 calc(var(--avatar-size) * .08) calc(var(--avatar-size) * .2) rgba(76, 45, 68, .18);
+}
+
+.pluis-avatar-eye {
+  position: absolute;
+  z-index: 3;
+  top: 31%;
+  width: 7%;
+  height: 10%;
+  border-radius: 50%;
+  background: #3e3036;
+}
+
+.avatar-eye-left { left: 30%; }
+.avatar-eye-right { right: 30%; }
+
+.pluis-avatar-glasses {
+  position: absolute;
+  z-index: 4;
+  top: 20%;
+  width: 36%;
+  height: 32%;
+  border: max(2px, calc(var(--avatar-size) * .055)) solid #5d4650;
+  border-radius: 50%;
+}
+
+.avatar-glasses-left { left: 9%; }
+.avatar-glasses-right { right: 9%; }
+
+.pluis-avatar-bridge {
+  position: absolute;
+  z-index: 4;
+  top: 34%;
+  left: 44%;
+  width: 12%;
+  height: max(2px, calc(var(--avatar-size) * .045));
+  border-radius: 999px;
+  background: #5d4650;
+}
+
+.pluis-avatar-nose {
+  position: absolute;
+  z-index: 3;
+  top: 55%;
+  left: 45%;
+  width: 10%;
+  height: 8%;
+  border-radius: 55% 55% 70% 70%;
+  background: #9a6670;
+}
+
+.pluis-avatar-smile {
+  position: absolute;
+  z-index: 3;
+  top: 63%;
+  left: 39%;
+  width: 22%;
+  height: 13%;
+  border-bottom: max(1px, calc(var(--avatar-size) * .025)) solid #7d565c;
+  border-radius: 50%;
+}
