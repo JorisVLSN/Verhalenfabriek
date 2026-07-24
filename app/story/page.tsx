@@ -14,9 +14,10 @@ import {
 } from "@/components/story-accessibility";
 import {
   createStoryTitle,
+  getStoredStories,
   saveStoredStory,
 } from "@/lib/story-storage";
-import { residents, Resident } from "@/lib/residents";
+import { getResident, residents, Resident } from "@/lib/residents";
 
 interface Message {
   id: string;
@@ -29,6 +30,7 @@ function StoryContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const childId = searchParams.get("child");
+  const requestedStoryId = searchParams.get("story");
   const selectedChild = children.find((c) => c.id === childId);
   const child = selectedChild ?? children[0];
 
@@ -48,6 +50,7 @@ function StoryContent() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const storyIdRef = useRef<string | null>(null);
   const storyCreatedAtRef = useRef<string | null>(null);
+  const restoredStoryRef = useRef<string | null>(null);
   const [storyStarted, setStoryStarted] = useState(false);
   const [showResidentPicker, setShowResidentPicker] = useState(false);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
@@ -79,13 +82,64 @@ function StoryContent() {
         createdAt: storyCreatedAtRef.current ?? now,
         updatedAt: now,
         messages: storedMessages,
+        currentPhase,
+        residentId: selectedResident?.id,
       });
 
       setSavedAt(now);
     }, 350);
 
     return () => window.clearTimeout(timeout);
-  }, [child.id, child.name, messages, storyStarted]);
+  }, [
+    child.id,
+    child.name,
+    currentPhase,
+    messages,
+    selectedResident,
+    storyStarted,
+  ]);
+
+  useEffect(() => {
+    if (
+      !selectedChild ||
+      !requestedStoryId ||
+      restoredStoryRef.current === requestedStoryId
+    ) {
+      return;
+    }
+
+    const storedStory = getStoredStories().find(
+      (story) =>
+        story.id === requestedStoryId && story.childId === selectedChild.id
+    );
+
+    if (!storedStory) {
+      router.replace(`/library?child=${selectedChild.id}`);
+      return;
+    }
+
+    restoredStoryRef.current = storedStory.id;
+    storyIdRef.current = storedStory.id;
+    storyCreatedAtRef.current = storedStory.createdAt;
+    setMessages(
+      storedStory.messages.map((message) => ({
+        id: generateId(),
+        role: message.role,
+        content: message.content,
+      }))
+    );
+    setCurrentPhase(
+      storedStory.currentPhase ??
+        Math.min(
+          storedStory.messages.filter((message) => message.role === "user")
+            .length,
+          storyPhases.length - 1
+        )
+    );
+    setSelectedResident(getResident(storedStory.residentId) ?? null);
+    setSavedAt(storedStory.updatedAt);
+    setStoryStarted(true);
+  }, [requestedStoryId, router, selectedChild]);
 
   const generateId = () => Math.random().toString(36).substring(2, 9);
 

@@ -10,6 +10,8 @@ export interface StoredStory {
   createdAt: string;
   updatedAt: string;
   messages: StoredStoryMessage[];
+  currentPhase?: number;
+  residentId?: string;
 }
 
 const STORAGE_KEY = "verhalenfabriek:stories:v1";

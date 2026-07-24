@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   BookOpen,
   Calendar,
+  Feather,
   Sparkles,
   Trash2,
   X,
@@ -119,6 +120,13 @@ function LibraryContent() {
               </p>
 
               <div className="mb-7 flex justify-center">
+                <Link
+                  href={`/story?child=${child.id}&story=${selectedStory.id}`}
+                  className="mr-3 inline-flex items-center gap-2 rounded-xl bg-purple-600 px-5 py-2.5 text-sm font-black text-white shadow-lg shadow-purple-200 transition-transform hover:-translate-y-0.5"
+                >
+                  <Feather className="h-4 w-4" />
+                  Samen verder vertellen
+                </Link>
                 <button
                   type="button"
                   onClick={() => setStoryPendingDelete(selectedStory)}
