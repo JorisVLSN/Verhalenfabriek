@@ -393,6 +393,320 @@
   .profile-name { font-size: 1.3rem; }
 }
 
+/* De entree voor de Eerste Ontdekkers */
+.discoverer-page {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: 26px clamp(18px, 5vw, 64px) 64px;
+  background:
+    radial-gradient(circle at 50% 8%, rgba(255, 244, 195, .9), transparent 24%),
+    linear-gradient(150deg, #fff9ed 0%, #f5eadf 52%, #e8dbe7 100%);
+  color: #50324f;
+}
+
+.discoverer-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(92, 58, 85, .055) .7px, transparent .7px);
+  background-size: 8px 8px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.discoverer-glow {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  filter: blur(75px);
+  opacity: .24;
+}
+
+.discoverer-glow-left {
+  bottom: -170px;
+  left: -150px;
+  background: #d8a9c3;
+}
+
+.discoverer-glow-right {
+  top: -160px;
+  right: -140px;
+  background: #f3d792;
+}
+
+.discoverer-nav,
+.discoverer-greeting,
+.discoverer-shelf,
+.first-discoverer,
+.professor-quote {
+  position: relative;
+  z-index: 1;
+  width: min(1080px, 100%);
+  margin-inline: auto;
+}
+
+.discoverer-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(102, 68, 95, .16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .55);
+  color: #76546e;
+  font-size: .9rem;
+  font-weight: 800;
+}
+
+.discoverer-back:focus-visible,
+.discoverer-continue:focus-visible,
+.first-discoverer button:focus-visible {
+  outline: 4px solid rgba(145, 92, 121, .25);
+  outline-offset: 3px;
+}
+
+.discoverer-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(36px, 7vh, 72px) 0 42px;
+  text-align: center;
+}
+
+.discoverer-greeting .pluis-avatar {
+  margin-bottom: 18px;
+  filter: drop-shadow(0 14px 20px rgba(80, 50, 79, .16));
+}
+
+.discoverer-greeting > p {
+  margin-bottom: 13px;
+  color: #9b5f70;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.04rem, 2vw, 1.25rem);
+  font-style: italic;
+}
+
+.discoverer-greeting h1 {
+  max-width: 720px;
+  color: #50324f;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.35rem, 5.5vw, 4.3rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+
+.discoverer-shelf {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.discoverer-card {
+  display: flex;
+  min-height: 225px;
+  flex-direction: column;
+  padding: clamp(22px, 3vw, 30px);
+  border: 1px solid rgba(89, 57, 80, .12);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 16px 42px rgba(76, 45, 68, .09);
+  transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+}
+
+.discoverer-card:hover {
+  transform: translateY(-4px) scale(1.008);
+  background: rgba(255, 255, 255, .88);
+  box-shadow: 0 23px 52px rgba(76, 45, 68, .14);
+}
+
+.discoverer-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.discoverer-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #efe2eb;
+  color: #744b70;
+  font-size: 1.2rem;
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, .48);
+}
+
+.discoverer-card h2 {
+  color: #563851;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.discoverer-last-story {
+  margin: 24px 0;
+}
+
+.discoverer-last-story span {
+  display: block;
+  margin-bottom: 7px;
+  color: #a08392;
+  font-size: .75rem;
+  font-weight: 900;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.discoverer-last-story p {
+  color: #71546c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.discoverer-continue {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 7px;
+  margin-top: auto;
+  color: #744b70;
+  font-size: .92rem;
+  font-weight: 900;
+}
+
+.discoverer-continue svg {
+  transition: transform .2s ease;
+}
+
+.discoverer-continue:hover svg {
+  transform: translateX(3px);
+}
+
+.discoverer-mila .discoverer-icon { background: #e8dff0; color: #745888; }
+.discoverer-ellie .discoverer-icon { background: #f6dfe4; color: #a65e70; }
+.discoverer-pauline .discoverer-icon { background: #dcebe7; color: #557d75; }
+.discoverer-mats .discoverer-icon { background: #f4e6cc; color: #9a6e35; }
+
+.first-discoverer {
+  margin-top: 20px;
+  border: 1px dashed rgba(102, 68, 95, .24);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .4);
+}
+
+.first-discoverer button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 19px 22px;
+  text-align: left;
+}
+
+.first-discoverer-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .72);
+  color: #a27a46;
+}
+
+.first-discoverer strong,
+.first-discoverer small {
+  display: block;
+}
+
+.first-discoverer strong {
+  color: #65415e;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.1rem;
+}
+
+.first-discoverer small {
+  margin-top: 3px;
+  color: #907687;
+  font-size: .88rem;
+}
+
+#first-visit-note {
+  padding: 0 22px 20px 78px;
+  color: #80677b;
+  line-height: 1.55;
+}
+
+.professor-quote {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 13px;
+  margin-top: 32px;
+  padding: 18px;
+  color: #80677b;
+  text-align: left;
+}
+
+.professor-quote-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 35px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .55);
+  color: #b18449;
+}
+
+.professor-quote h2 {
+  margin-bottom: 4px;
+  color: #694568;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
+.professor-quote blockquote {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .discoverer-page {
+    padding-inline: 15px;
+  }
+
+  .discoverer-greeting {
+    padding-top: 36px;
+  }
+
+  .discoverer-shelf {
+    grid-template-columns: 1fr;
+  }
+
+  .discoverer-card {
+    min-height: 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discoverer-card,
+  .discoverer-continue svg {
+    transition: none;
+  }
+}
+
 /* Reusable Professor Pluis cat avatar */
 .pluis-avatar {
   --avatar-size: 64px;
