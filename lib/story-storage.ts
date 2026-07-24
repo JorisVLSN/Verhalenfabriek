@@ -41,6 +41,16 @@ export function saveStoredStory(story: StoredStory) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
 }
 
+export function deleteStoredStory(storyId: string, childId: string) {
+  const stories = getStoredStories();
+  const remainingStories = stories.filter(
+    (story) => !(story.id === storyId && story.childId === childId)
+  );
+
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(remainingStories));
+  return remainingStories;
+}
+
 export function createStoryTitle(
   childName: string,
   messages: StoredStoryMessage[]

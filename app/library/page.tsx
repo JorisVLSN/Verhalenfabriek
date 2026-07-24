@@ -1,12 +1,23 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, BookOpen, Calendar, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  Sparkles,
+  Trash2,
+  X,
+} from "lucide-react";
 import { children } from "@/lib/children";
-import { getStoredStories, StoredStory } from "@/lib/story-storage";
+import {
+  deleteStoredStory,
+  getStoredStories,
+  StoredStory,
+} from "@/lib/story-storage";
 
 function formatStoryDate(value: string) {
   return new Intl.DateTimeFormat("nl-BE", {
@@ -18,19 +29,42 @@ function formatStoryDate(value: string) {
 
 function LibraryContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const childId = searchParams.get("child");
   const child = children.find((candidate) => candidate.id === childId);
   const [stories, setStories] = useState<StoredStory[]>([]);
   const [selectedStory, setSelectedStory] = useState<StoredStory | null>(null);
+  const [storyPendingDelete, setStoryPendingDelete] =
+    useState<StoredStory | null>(null);
 
   useEffect(() => {
+    if (!child) {
+      router.replace("/ontdekker?next=library");
+      return;
+    }
+
     const allStories = getStoredStories();
-    setStories(
-      child
-        ? allStories.filter((story) => story.childId === child.id)
-        : allStories
-    );
-  }, [child]);
+    setStories(allStories.filter((story) => story.childId === child.id));
+  }, [child, router]);
+
+  const confirmDelete = () => {
+    if (!storyPendingDelete || !child) return;
+
+    const remainingStories = deleteStoredStory(
+      storyPendingDelete.id,
+      child.id
+    ).filter((story) => story.childId === child.id);
+
+    setStories(remainingStories);
+    if (selectedStory?.id === storyPendingDelete.id) {
+      setSelectedStory(null);
+    }
+    setStoryPendingDelete(null);
+  };
+
+  if (!child) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen p-4 md:p-6">
@@ -84,6 +118,17 @@ function LibraryContent() {
                 {formatStoryDate(selectedStory.createdAt)}
               </p>
 
+              <div className="mb-7 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setStoryPendingDelete(selectedStory)}
+                  className="inline-flex items-center gap-2 rounded-xl border-2 border-rose-200 bg-white px-4 py-2 text-sm font-black text-rose-500 transition-colors hover:bg-rose-50"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Verhaal wissen
+                </button>
+              </div>
+
               <div className="mx-auto max-w-2xl space-y-5">
                 {selectedStory.messages.map((message, index) => (
                   <div
@@ -111,24 +156,38 @@ function LibraryContent() {
               </p>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 {stories.map((story, index) => (
-                  <motion.button
+                  <motion.article
                     key={story.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.07 }}
                     whileHover={{ y: -4 }}
-                    onClick={() => setSelectedStory(story)}
-                    className="rounded-2xl border-2 border-purple-100 bg-gradient-to-br from-white to-purple-50 p-5 text-left transition-all hover:border-purple-300 hover:shadow-lg"
+                    className="relative rounded-2xl border-2 border-purple-100 bg-gradient-to-br from-white to-purple-50 transition-all hover:border-purple-300 hover:shadow-lg"
                   >
-                    <BookOpen className="mb-4 h-9 w-9 text-purple-500" />
-                    <h2 className="mb-3 font-black leading-snug text-purple-700">
-                      {story.title}
-                    </h2>
-                    <p className="flex items-center gap-1 text-xs text-purple-400">
-                      <Calendar className="h-3 w-3" />
-                      {formatStoryDate(story.updatedAt)}
-                    </p>
-                  </motion.button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedStory(story)}
+                      className="block w-full p-5 pb-16 text-left"
+                    >
+                      <BookOpen className="mb-4 h-9 w-9 text-purple-500" />
+                      <h2 className="mb-3 font-black leading-snug text-purple-700">
+                        {story.title}
+                      </h2>
+                      <p className="flex items-center gap-1 text-xs text-purple-400">
+                        <Calendar className="h-3 w-3" />
+                        {formatStoryDate(story.updatedAt)}
+                      </p>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStoryPendingDelete(story)}
+                      className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-xs font-black text-rose-400 transition-colors hover:bg-rose-50 hover:text-rose-600"
+                      aria-label={`Wis ${story.title}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                      Wissen
+                    </button>
+                  </motion.article>
                 ))}
               </div>
             </>
@@ -151,6 +210,58 @@ function LibraryContent() {
             </div>
           )}
         </motion.section>
+
+        {storyPendingDelete && (
+          <div
+            className="fixed inset-0 z-50 grid place-items-center bg-purple-950/30 p-4 backdrop-blur-sm"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-story-title"
+          >
+            <div className="relative w-full max-w-md rounded-3xl border-4 border-white bg-gradient-to-br from-white to-rose-50 p-7 text-center shadow-2xl">
+              <button
+                type="button"
+                onClick={() => setStoryPendingDelete(null)}
+                className="absolute right-4 top-4 rounded-full p-2 text-purple-300 hover:bg-purple-50 hover:text-purple-600"
+                aria-label="Sluiten"
+              >
+                <X className="h-5 w-5" />
+              </button>
+
+              <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full bg-rose-100 text-rose-500">
+                <Trash2 className="h-7 w-7" />
+              </div>
+              <h2
+                id="delete-story-title"
+                className="text-2xl font-black text-purple-700"
+              >
+                Dit verhaal echt wissen?
+              </h2>
+              <p className="mt-3 text-purple-500">
+                <strong>{storyPendingDelete.title}</strong> verdwijnt dan uit{" "}
+                de boekenplank van {child?.name}. Dit kan niet ongedaan worden
+                gemaakt.
+              </p>
+
+              <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => setStoryPendingDelete(null)}
+                  className="rounded-2xl border-2 border-purple-200 bg-white px-5 py-3 font-black text-purple-600"
+                >
+                  Toch bewaren
+                </button>
+                <button
+                  type="button"
+                  onClick={confirmDelete}
+                  className="rounded-2xl bg-rose-500 px-5 py-3 font-black text-white shadow-lg shadow-rose-200"
+                >
+                  Ja, wis het verhaal
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
