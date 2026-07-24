@@ -99,6 +99,7 @@ function StoryContent() {
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
       let fullText = "";
+      let streamBuffer = "";
       const messageId = generateId();
 
       // Voeg placeholder toe voor streaming
@@ -109,28 +110,31 @@ function StoryContent() {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n");
+          streamBuffer += decoder.decode(value, { stream: true });
 
-          for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6);
-              if (data === "[DONE]") continue;
+          let eventBoundary = streamBuffer.indexOf("\n\n");
+          while (eventBoundary !== -1) {
+            const event = streamBuffer.slice(0, eventBoundary);
+            streamBuffer = streamBuffer.slice(eventBoundary + 2);
 
-              try {
-                const parsed = JSON.parse(data);
-                if (parsed.text) {
-                  fullText += parsed.text;
-                  setMessages((prev) =>
-                    prev.map((m) =>
-                      m.id === messageId ? { ...m, content: fullText } : m
-                    )
-                  );
-                }
-              } catch {
-                // Skip invalid JSON
+            const dataLine = event
+              .split("\n")
+              .find((line) => line.startsWith("data: "));
+            const data = dataLine?.slice(6);
+
+            if (data && data !== "[DONE]") {
+              const parsed = JSON.parse(data);
+              if (parsed.text) {
+                fullText += parsed.text.replace(/\*+/g, "");
+                setMessages((prev) =>
+                  prev.map((m) =>
+                    m.id === messageId ? { ...m, content: fullText } : m
+                  )
+                );
               }
             }
+
+            eventBoundary = streamBuffer.indexOf("\n\n");
           }
         }
       }
