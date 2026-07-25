@@ -19,6 +19,7 @@ import {
   getStoredStories,
   StoredStory,
 } from "@/lib/story-storage";
+import { ReadAloudButton } from "@/components/story-accessibility";
 
 function formatStoryDate(value: string) {
   return new Intl.DateTimeFormat("nl-BE", {
@@ -153,6 +154,9 @@ function LibraryContent() {
                       </p>
                     )}
                     <p className="whitespace-pre-wrap">{message.content}</p>
+                    {message.role === "assistant" && (
+                      <ReadAloudButton text={message.content} />
+                    )}
                   </div>
                 ))}
               </div>

@@ -104,4 +104,19 @@ export const friendBookEntries: FriendBookEntry[] = [
     funnyHabit: "Een gewone aardbei wordt bij hem al snel zo groot als een huis",
     motto: "Het was minstens honderd keer zo groot!",
   },
+  {
+    id: "snuffel",
+    name: "Snuffel",
+    emoji: "🐶🦄",
+    color: "rainbow",
+    discoveredBy: "Mila",
+    livesAt: "Nog te ontdekken samen met Mila",
+    loves: "Nog te ontdekken samen met Mila",
+    talent:
+      "Met zijn neus de plek vinden waar een nieuw avontuur begint",
+    dream: "Nog te ontdekken samen met Mila",
+    funnyHabit:
+      "Snuffelt aandachtig wanneer ergens een nieuw avontuur in de lucht hangt",
+    motto: "Nog te ontdekken samen met Mila",
+  },
 ];

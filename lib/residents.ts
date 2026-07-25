@@ -18,6 +18,7 @@ const courtyardResidentIds: ResidentId[] = [
   "dokter-pen",
   "juffrouw-andersom",
   "karel-kraa",
+  "snuffel",
 ];
 
 export const residents: Resident[] = courtyardResidentIds.map((id) => {

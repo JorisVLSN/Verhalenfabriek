@@ -55,7 +55,6 @@ function StoryContent() {
   const [showResidentPicker, setShowResidentPicker] = useState(false);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [savedAt, setSavedAt] = useState<string | null>(null);
-  const canListen = child.id === "pauline" || child.id === "mats";
   const canAnswerWithVoice = child.id === "mats";
 
   const scrollToBottom = () => {
@@ -553,7 +552,7 @@ function StoryContent() {
                             </span>
                           )}
                         </div>
-                        {msg.role === "assistant" && msg.content && canListen && (
+                        {msg.role === "assistant" && msg.content && (
                           <ReadAloudButton text={msg.content} />
                         )}
                       </div>

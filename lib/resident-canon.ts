@@ -5,7 +5,8 @@ export type ResidentId =
   | "pluiziebol"
   | "dokter-pen"
   | "juffrouw-andersom"
-  | "karel-kraa";
+  | "karel-kraa"
+  | "snuffel";
 
 export interface ResidentCanon {
   id: ResidentId;
@@ -298,6 +299,42 @@ export const residentCanon: Record<ResidentId, ResidentCanon> = {
     ],
     storyThemes: ["fantasie", "kritisch denken", "vertellen", "verwondering"],
     discoveredBy: "Oma",
+  },
+  snuffel: {
+    id: "snuffel",
+    name: "Snuffel",
+    emoji: "🐶🦄",
+    kind: "Een eenhoornhond",
+    role: "Ontdekker van plekken waar een nieuw avontuur begint",
+    essence:
+      "Snuffel ontdekt de wereld met zijn neus en vindt vaak de plek waar een nieuw avontuur begint.",
+    personality: ["nieuwsgierig", "ontdekkend"],
+    fixedFacts: [
+      "Snuffel is een eenhoornhond.",
+      "Snuffel ontdekt de wereld met zijn neus.",
+      "Snuffel vindt vaak de plek waar een nieuw avontuur begint.",
+      "Snuffel is een vast onderdeel van de Verhalenfabriek-canon.",
+      "Verdere ontwikkeling van Snuffel blijft open voor Mila in toekomstige verhalen.",
+    ],
+    talents: [
+      "de wereld met zijn neus onderzoeken",
+      "plekken vinden waar een nieuw avontuur kan beginnen",
+    ],
+    quirks: [
+      "snuffelt aandachtig wanneer ergens een nieuw avontuur in de lucht hangt",
+    ],
+    speechStyle: [
+      "reageert vriendelijk en eenvoudig",
+      "zijn definitieve manier van spreken is nog niet door Mila ontdekt",
+      "voeg geen vaste stopwoorden of uitspraken aan de canon toe",
+    ],
+    neverDoes: [
+      "doen alsof een nog onbekend detail al canon is",
+      "een kind naar privégegevens vragen",
+      "de heldenrol van het kind overnemen",
+    ],
+    storyThemes: ["ontdekken", "nieuwe avonturen", "speuren", "verwondering"],
+    discoveredBy: "Mila",
   },
 };
 

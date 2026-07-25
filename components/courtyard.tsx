@@ -75,7 +75,6 @@ export function Courtyard() {
 
   const featuredResident = residentCanon[dailyPlan.speakerId];
   const subjectResident = residentCanon[dailyPlan.subjectId];
-  const canListen = child.id === "pauline" || child.id === "mats";
   const canUseVoice = child.id === "mats";
 
   const openChat = (resident: ResidentCanon) => {
@@ -250,11 +249,9 @@ export function Courtyard() {
               <h3>{dailyStory.title}</h3>
               <p>{dailyStory.messages[0]?.content}</p>
               <div className="courtyard-story-actions">
-                {canListen && (
-                  <ReadAloudButton
-                    text={`${dailyStory.title}. ${dailyStory.messages[0]?.content ?? ""}`}
-                  />
-                )}
+                <ReadAloudButton
+                  text={`${dailyStory.title}. ${dailyStory.messages[0]?.content ?? ""}`}
+                />
                 <Link href={`/library?child=${child.id}`}>
                   Staat in mijn boekenplank →
                 </Link>
@@ -326,7 +323,7 @@ export function Courtyard() {
                   className={message.role}
                 >
                   <p>{message.content}</p>
-                  {message.role === "assistant" && canListen && (
+                  {message.role === "assistant" && (
                     <ReadAloudButton text={message.content} />
                   )}
                 </article>
@@ -386,6 +383,7 @@ function getResidentWelcome(resident: ResidentCanon, childName: string) {
     "dokter-pen": `Dag ${childName}! Ik controleerde net of alle boeken zich vandaag goed voelen.`,
     "juffrouw-andersom": `Goedenacht, ${childName}! O, wacht… ik bedoel natuurlijk goedendag!`,
     "karel-kraa": `Ha, ${childName}! Ik heb vandaag minstens duizend avonturen gezien. Of waren het er misschien drie?`,
+    snuffel: `Snuffel komt nieuwsgierig naar ${childName} toe en snuffelt even in de lucht. Volgens mij heeft hij ergens het begin van een avontuur geroken.`,
   };
   return welcomes[resident.id] ?? `Hallo ${childName}, wat fijn dat je er bent.`;
 }
