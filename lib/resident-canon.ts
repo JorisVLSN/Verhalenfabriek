@@ -313,6 +313,7 @@ export const residentCanon: Record<ResidentId, ResidentCanon> = {
       "Snuffel is een eenhoornhond.",
       "Snuffel ontdekt de wereld met zijn neus.",
       "Snuffel vindt vaak de plek waar een nieuw avontuur begint.",
+      "Het favoriete eten van Snuffel is Aiki Noodles.",
       "Snuffel is een vast onderdeel van de Verhalenfabriek-canon.",
       "Verdere ontwikkeling van Snuffel blijft open voor Mila in toekomstige verhalen.",
     ],

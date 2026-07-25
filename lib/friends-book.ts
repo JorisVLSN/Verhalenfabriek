@@ -111,7 +111,7 @@ export const friendBookEntries: FriendBookEntry[] = [
     color: "rainbow",
     discoveredBy: "Mila",
     livesAt: "Nog te ontdekken samen met Mila",
-    loves: "Nog te ontdekken samen met Mila",
+    loves: "Aiki Noodles",
     talent:
       "Met zijn neus de plek vinden waar een nieuw avontuur begint",
     dream: "Nog te ontdekken samen met Mila",
