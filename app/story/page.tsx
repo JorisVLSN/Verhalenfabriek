@@ -18,6 +18,7 @@ import {
   saveStoredStory,
 } from "@/lib/story-storage";
 import { getResident, residents, Resident } from "@/lib/residents";
+import { ResidentPortrait } from "@/components/resident-portrait";
 
 interface Message {
   id: string;
@@ -483,9 +484,12 @@ function StoryContent() {
                     onClick={() => startAdventureWithResident(resident)}
                     className="resident-card"
                   >
-                    <span className="resident-card-emoji" aria-hidden="true">
-                      {resident.emoji}
-                    </span>
+                    <ResidentPortrait
+                      name={resident.name}
+                      emoji={resident.emoji}
+                      imageSrc={resident.imageSrc}
+                      className="resident-card-emoji"
+                    />
                     <span>
                       <span className="resident-card-name">{resident.name}</span>
                       <span className="resident-card-description">

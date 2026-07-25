@@ -32,6 +32,7 @@ import {
   ReadAloudButton,
   VoiceAnswerButton,
 } from "@/components/story-accessibility";
+import { ResidentPortrait } from "@/components/resident-portrait";
 
 interface CourtyardMessage {
   role: "user" | "assistant";
@@ -217,9 +218,12 @@ export function Courtyard() {
         className="courtyard-feature"
         aria-labelledby="featured-resident-title"
       >
-        <div className="courtyard-feature-portrait" aria-hidden="true">
-          {featuredResident.emoji}
-        </div>
+        <ResidentPortrait
+          name={featuredResident.name}
+          emoji={featuredResident.emoji}
+          imageSrc={featuredResident.imageSrc}
+          className="courtyard-feature-portrait"
+        />
         <div>
           <p className="courtyard-feature-label">
             <Sparkles size={16} />
@@ -275,9 +279,12 @@ export function Courtyard() {
                 resident.id === featuredResident.id ? "is-featured" : ""
               }`}
             >
-              <span className="courtyard-resident-emoji" aria-hidden="true">
-                {resident.emoji}
-              </span>
+              <ResidentPortrait
+                name={resident.name}
+                emoji={resident.emoji}
+                imageSrc={resident.imageSrc}
+                className="courtyard-resident-emoji"
+              />
               <h3>{resident.name}</h3>
               <p>{resident.role}</p>
               <button
@@ -302,7 +309,12 @@ export function Courtyard() {
         >
           <div className="courtyard-chat">
             <header>
-              <span aria-hidden="true">{activeResident.emoji}</span>
+              <ResidentPortrait
+                name={activeResident.name}
+                emoji={activeResident.emoji}
+                imageSrc={activeResident.imageSrc}
+                className="courtyard-chat-portrait"
+              />
               <div>
                 <small>Een korte babbel met</small>
                 <h2 id="courtyard-chat-title">{activeResident.name}</h2>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart, Sparkles } from "lucide-react";
 import { friendBookEntries } from "@/lib/friends-book";
 import { ReadAloudButton } from "@/components/story-accessibility";
+import { ResidentPortrait } from "@/components/resident-portrait";
 
 export function FriendsBook() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,9 +37,12 @@ export function FriendsBook() {
           <Sparkles size={16} />
           Mijn vriendenpagina
         </p>
-        <div className="friends-book-portrait" aria-hidden="true">
-          {entry.emoji}
-        </div>
+        <ResidentPortrait
+          name={entry.name}
+          emoji={entry.emoji}
+          imageSrc={entry.imageSrc}
+          className="friends-book-portrait"
+        />
         <h2>{entry.name}</h2>
         <p className="friends-book-discoverer">
           Ontdekt door <strong>{entry.discoveredBy}</strong>

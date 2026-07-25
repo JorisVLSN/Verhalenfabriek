@@ -8,6 +8,7 @@ export interface Resident {
   id: ResidentId;
   name: string;
   emoji: string;
+  imageSrc?: string;
   shortDescription: string;
   storyRole: string;
 }
@@ -28,6 +29,7 @@ export const residents: Resident[] = courtyardResidentIds.map((id) => {
     id,
     name: canon.name,
     emoji: canon.emoji,
+    imageSrc: canon.imageSrc,
     shortDescription: canon.essence,
     storyRole: [
       canon.kind,

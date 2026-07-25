@@ -2,6 +2,7 @@ export interface FriendBookEntry {
   id: string;
   name: string;
   emoji: string;
+  imageSrc?: string;
   color: string;
   discoveredBy: string;
   livesAt: string;
@@ -107,6 +108,7 @@ export const friendBookEntries: FriendBookEntry[] = [
   {
     id: "snuffel",
     name: "Snuffel",
+    imageSrc: "/characters/snuffel.png",
     emoji: "🐶🦄",
     color: "rainbow",
     discoveredBy: "Mila",

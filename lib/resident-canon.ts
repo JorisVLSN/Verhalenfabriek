@@ -12,6 +12,7 @@ export interface ResidentCanon {
   id: ResidentId;
   name: string;
   emoji: string;
+  imageSrc?: string;
   kind: string;
   role: string;
   essence: string;
@@ -303,6 +304,7 @@ export const residentCanon: Record<ResidentId, ResidentCanon> = {
   snuffel: {
     id: "snuffel",
     name: "Snuffel",
+    imageSrc: "/characters/snuffel.png",
     emoji: "🐶🦄",
     kind: "Een eenhoornhond",
     role: "Ontdekker van plekken waar een nieuw avontuur begint",
@@ -314,6 +316,9 @@ export const residentCanon: Record<ResidentId, ResidentCanon> = {
       "Snuffel ontdekt de wereld met zijn neus.",
       "Snuffel vindt vaak de plek waar een nieuw avontuur begint.",
       "Het favoriete eten van Snuffel is Aiki Noodles.",
+      "Snuffel heeft een zachte roomwitte vacht, hangoren met pasteltinten en een kleine gouden spiraalhoorn.",
+      "Zijn manen en pluimstaart hebben zachte tinten roze, lila en lichtblauw.",
+      "Snuffel draagt een paarse halsband met een klein gouden pootmedaillon.",
       "Snuffel is een vast onderdeel van de Verhalenfabriek-canon.",
       "Verdere ontwikkeling van Snuffel blijft open voor Mila in toekomstige verhalen.",
     ],
