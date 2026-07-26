@@ -1,5 +1,7 @@
 export interface FriendBookEntry {
   id: string;
+  canonId?: string;
+  status?: string;
   name: string;
   emoji: string;
   imageSrc?: string;
@@ -120,5 +122,21 @@ export const friendBookEntries: FriendBookEntry[] = [
     funnyHabit:
       "Snuffelt aandachtig wanneer ergens een nieuw avontuur in de lucht hangt",
     motto: "Nog te ontdekken samen met Mila",
+  },
+  {
+    id: "sarah",
+    canonId: "VF-007",
+    status: "In ontwikkeling",
+    name: "Sarah",
+    emoji: "🐰",
+    color: "lilac",
+    discoveredBy: "Mila",
+    livesAt: "Dat vertel ik je graag een andere keer",
+    loves: "Avonturen beleven en samen met Snuffel op onderzoek uitgaan",
+    talent:
+      "Goed nadenken, anderen helpen en gevonden schatten eerlijk terugbrengen",
+    dream: "Dat blijft voorlopig nog mijn geheimpje",
+    funnyHabit: "Ze bedenkt graag grappige verhalen",
+    motto: "Dat vertel ik je graag een andere keer.",
   },
 ];
