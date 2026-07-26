@@ -1638,6 +1638,361 @@
   }
 }
 
+/* Het verborgen kantoor van Professor Pluis */
+.admin-office {
+  min-height: 100vh;
+  padding: clamp(20px, 5vw, 64px);
+  background:
+    radial-gradient(circle at 10% 5%, rgba(250, 204, 221, .5), transparent 30%),
+    linear-gradient(150deg, #fffaf0, #faf5ff);
+  color: #5d3e58;
+}
+
+.admin-office > nav,
+.admin-office > header,
+.admin-office > aside,
+.admin-office > section {
+  max-width: 1120px;
+  margin-inline: auto;
+}
+
+.admin-office nav a {
+  color: #8b5b85;
+  font-weight: 800;
+}
+
+.admin-office > header {
+  padding: 55px 0 35px;
+}
+
+.admin-office > header p,
+.admin-section-title p {
+  color: #a56b91;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.admin-office > header h1 {
+  margin: 8px 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.3rem, 6vw, 4.7rem);
+  font-weight: 500;
+}
+
+.admin-office > header span {
+  color: #8a7184;
+}
+
+.admin-office > aside {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 20px;
+  border: 1px solid #f4c6cc;
+  border-radius: 18px;
+  background: #fff8f5;
+  color: #925565;
+}
+
+.admin-office > section {
+  margin-top: 28px;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid rgba(112, 72, 106, .12);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 20px 55px rgba(78, 53, 73, .09);
+}
+
+.admin-section-title h2 {
+  margin-top: 5px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+  font-weight: 500;
+}
+
+.admin-child-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.admin-child-grid article {
+  padding: 22px;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #fff, #faf5ff);
+  box-shadow: inset 0 0 0 1px #f0e2f1;
+}
+
+.admin-child-grid h3 {
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.admin-child-grid article > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 13px 0;
+}
+
+.admin-child-grid article > div span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f3e8ff;
+  color: #7e3d91;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.admin-child-grid article svg {
+  width: 15px;
+  height: 15px;
+}
+
+.admin-child-grid li {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px dashed #eaddea;
+  color: #80677b;
+}
+
+.admin-suggestion-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.admin-suggestion-list article {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 20px;
+  background: #fffaf0;
+}
+
+.admin-suggestion-list article > svg {
+  flex: 0 0 24px;
+  color: #d39b2f;
+}
+
+.admin-suggestion-list p + p {
+  margin-top: 5px;
+  color: #7e6678;
+}
+
+.admin-suggestion-list small {
+  display: block;
+  margin-top: 9px;
+  color: #9b8795;
+  font-style: italic;
+}
+
+.admin-empty {
+  margin-top: 20px;
+  padding: 28px;
+  border-radius: 20px;
+  background: #faf5ff;
+  color: #81687c;
+  text-align: center;
+}
+
+/* Boekweergave en printklare PDF */
+.print-story-loading {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #7e3d91;
+}
+
+.print-book {
+  min-height: 100vh;
+  padding: 28px;
+  background: #eee8df;
+  color: #382d36;
+}
+
+.print-book-toolbar {
+  display: flex;
+  max-width: 800px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 0 auto 24px;
+}
+
+.print-book-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 17px;
+  border-radius: 14px;
+  background: #7e3d91;
+  color: white;
+  font-weight: 900;
+}
+
+.print-book-toolbar p {
+  color: #746973;
+  font-size: .85rem;
+}
+
+.print-book > article {
+  max-width: 800px;
+  margin: auto;
+  background: #fffcf5;
+  box-shadow: 0 20px 65px rgba(49, 37, 46, .18);
+}
+
+.print-book-cover,
+.print-book-ending {
+  display: flex;
+  min-height: 260mm;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 25mm;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(243, 216, 235, .8), transparent 33%),
+    #fffaf0;
+  text-align: center;
+}
+
+.print-book-cover svg {
+  width: 58px;
+  height: 58px;
+  margin-bottom: 24px;
+  color: #9b5ca4;
+}
+
+.print-book-cover p {
+  color: #a06489;
+  font-size: .8rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.print-book-cover h1 {
+  max-width: 600px;
+  margin: 22px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.print-book-cover span {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.print-book-cover small {
+  margin-top: 15px;
+  color: #8b7d87;
+}
+
+.print-book-page {
+  position: relative;
+  min-height: 245mm;
+  padding: 30mm 28mm 24mm;
+  page-break-after: always;
+}
+
+.print-book-page p {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16pt;
+  line-height: 1.8;
+}
+
+.print-book-page > span {
+  position: absolute;
+  right: 25mm;
+  bottom: 15mm;
+  color: #a895a3;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.print-book-ending p {
+  margin-bottom: 25px;
+  color: #9b5ca4;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3rem;
+}
+
+.print-book-ending strong {
+  max-width: 440px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.print-book-ending span {
+  margin-top: 30px;
+  color: #927f8b;
+}
+
+@media (max-width: 700px) {
+  .admin-child-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .print-book {
+    padding: 0;
+  }
+
+  .print-book-toolbar {
+    padding: 16px;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .print-book {
+    padding: 0;
+    background: white;
+  }
+
+  .print-book-toolbar {
+    display: none;
+  }
+
+  .print-book > article {
+    max-width: none;
+    box-shadow: none;
+  }
+
+  .print-book-cover,
+  .print-book-page,
+  .print-book-ending {
+    width: 210mm;
+    min-height: 297mm;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-book-ending {
+    break-after: auto;
+    page-break-after: auto;
+  }
+}
+
 @media (max-width: 720px) {
   .friends-book-shell {
     padding: 1rem;

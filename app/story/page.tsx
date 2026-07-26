@@ -14,8 +14,10 @@ import {
 } from "@/components/story-accessibility";
 import {
   createStoryTitle,
+  getAvailableStories,
   getStoredStories,
   saveStoredStory,
+  StoredStory,
 } from "@/lib/story-storage";
 import { getResident, residents, Resident } from "@/lib/residents";
 import { ResidentPortrait } from "@/components/resident-portrait";
@@ -108,37 +110,42 @@ function StoryContent() {
       return;
     }
 
-    const storedStory = getStoredStories().find(
-      (story) =>
-        story.id === requestedStoryId && story.childId === selectedChild.id
-    );
+    void getAvailableStories(selectedChild.id).then((stories) => {
+      const storedStory = stories.find(
+        (story: StoredStory) =>
+          story.id === requestedStoryId && story.childId === selectedChild.id
+      );
 
-    if (!storedStory) {
-      router.replace(`/library?child=${selectedChild.id}`);
-      return;
-    }
+      if (!storedStory) {
+        router.replace(`/library?child=${selectedChild.id}`);
+        return;
+      }
 
-    restoredStoryRef.current = storedStory.id;
-    storyIdRef.current = storedStory.id;
-    storyCreatedAtRef.current = storedStory.createdAt;
-    setMessages(
-      storedStory.messages.map((message) => ({
-        id: generateId(),
-        role: message.role,
-        content: message.content,
-      }))
-    );
-    setCurrentPhase(
-      storedStory.currentPhase ??
-        Math.min(
-          storedStory.messages.filter((message) => message.role === "user")
-            .length,
-          storyPhases.length - 1
-        )
-    );
-    setSelectedResident(getResident(storedStory.residentId) ?? null);
-    setSavedAt(storedStory.updatedAt);
-    setStoryStarted(true);
+      restoredStoryRef.current = storedStory.id;
+      storyIdRef.current = storedStory.id;
+      storyCreatedAtRef.current = storedStory.createdAt;
+      setMessages(
+        storedStory.messages.map((message: StoredStory["messages"][number]) => ({
+          id: generateId(),
+          role: message.role,
+          content: message.content,
+        }))
+      );
+      setCurrentPhase(
+        storedStory.currentPhase ??
+          Math.min(
+            storedStory.messages.filter(
+              (message: StoredStory["messages"][number]) =>
+                message.role === "user"
+            )
+              .length,
+            storyPhases.length - 1
+          )
+      );
+      setSelectedResident(getResident(storedStory.residentId) ?? null);
+      setSavedAt(storedStory.updatedAt);
+      setStoryStarted(true);
+    });
   }, [requestedStoryId, router, selectedChild]);
 
   const generateId = () => Math.random().toString(36).substring(2, 9);

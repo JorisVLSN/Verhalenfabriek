@@ -25,6 +25,7 @@ import {
 } from "@/lib/resident-canon";
 import {
   getStoredStories,
+  getAvailableStories,
   saveStoredStory,
   StoredStory,
 } from "@/lib/story-storage";
@@ -67,9 +68,15 @@ export function Courtyard() {
       return;
     }
 
-    const stories = getStoredStories();
-    setDailyStory(findDailyStory(stories, child.id) ?? null);
-    setDailyPlan(createDailyStoryPlan(child.id, stories));
+    let active = true;
+    void getAvailableStories(child.id).then((stories) => {
+      if (!active) return;
+      setDailyStory(findDailyStory(stories, child.id) ?? null);
+      setDailyPlan(createDailyStoryPlan(child.id, stories));
+    });
+    return () => {
+      active = false;
+    };
   }, [child, router]);
 
   if (!child || !dailyPlan) return null;
@@ -88,6 +95,14 @@ export function Courtyard() {
         content: getResidentWelcome(resident, child.name),
       },
     ]);
+    void fetch("/api/activity", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        childId: child.id,
+        residentId: resident.id,
+      }),
+    }).catch(() => undefined);
   };
 
   const sendChatMessage = async () => {

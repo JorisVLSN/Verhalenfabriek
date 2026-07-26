@@ -9,6 +9,7 @@ import {
   BookOpen,
   Calendar,
   Feather,
+  Printer,
   Sparkles,
   Trash2,
   X,
@@ -16,7 +17,7 @@ import {
 import { children } from "@/lib/children";
 import {
   deleteStoredStory,
-  getStoredStories,
+  getAvailableStories,
   StoredStory,
 } from "@/lib/story-storage";
 import { ReadAloudButton } from "@/components/story-accessibility";
@@ -45,8 +46,15 @@ function LibraryContent() {
       return;
     }
 
-    const allStories = getStoredStories();
-    setStories(allStories.filter((story) => story.childId === child.id));
+    let active = true;
+    void getAvailableStories(child.id).then((allStories) => {
+      if (active) {
+        setStories(allStories.filter((story) => story.childId === child.id));
+      }
+    });
+    return () => {
+      active = false;
+    };
   }, [child, router]);
 
   const confirmDelete = () => {
@@ -136,6 +144,14 @@ function LibraryContent() {
                   <Trash2 className="h-4 w-4" />
                   Verhaal wissen
                 </button>
+                <Link
+                  href={`/library/${selectedStory.id}/print?child=${child.id}`}
+                  target="_blank"
+                  className="ml-3 inline-flex items-center gap-2 rounded-xl border-2 border-purple-200 bg-white px-4 py-2 text-sm font-black text-purple-600 transition-colors hover:bg-purple-50"
+                >
+                  <Printer className="h-4 w-4" />
+                  Maak er een boek van
+                </Link>
               </div>
 
               <div className="mx-auto max-w-2xl space-y-5">
