@@ -29,8 +29,14 @@ interface SuggestionRow {
 
 export default async function PluisKantoorPage() {
   const configured = isDatabaseConfigured();
-  const [stories, interactions, suggestions] = configured
-    ? await Promise.all([
+  let stories: StoryCountRow[] = [];
+  let interactions: InteractionRow[] = [];
+  let suggestions: SuggestionRow[] = [];
+  let databaseError = "";
+
+  if (configured) {
+    try {
+      [stories, interactions, suggestions] = await Promise.all([
         databaseRequest<StoryCountRow[]>("stories?select=child_id"),
         databaseRequest<InteractionRow[]>(
           "interactions?select=child_id,resident_id"
@@ -38,8 +44,13 @@ export default async function PluisKantoorPage() {
         databaseRequest<SuggestionRow[]>(
           "character_suggestions?select=*&order=created_at.desc"
         ),
-      ])
-    : [[], [], []];
+      ]);
+    } catch (error) {
+      console.error("Pluis kantoor database error:", error);
+      databaseError =
+        "Het kantoor vindt de database, maar kan de boekenkasten nog niet openen. Controleer of het databaseschema volledig is uitgevoerd en of de Supabase-sleutels juist zijn ingevuld.";
+    }
+  }
 
   return (
     <main className="admin-office">
@@ -61,13 +72,28 @@ export default async function PluisKantoorPage() {
         </p>
       </aside>
 
-      {!configured ? (
+      {!configured || databaseError ? (
         <section className="admin-empty">
-          <h2>De database wacht nog op haar sleutel</h2>
+          <h2>
+            {databaseError
+              ? "Professor Pluis krijgt de boekenkast nog niet open"
+              : "De database wacht nog op haar sleutel"}
+          </h2>
           <p>
-            Voer eerst het Supabase-schema uit en voeg de twee geheime
-            omgevingsvariabelen toe aan Vercel.
+            {databaseError ||
+              "Voer eerst het Supabase-schema uit en voeg de twee geheime omgevingsvariabelen toe aan Vercel."}
           </p>
+          <ol className="admin-setup-list">
+            <li>Open in Supabase de SQL Editor.</li>
+            <li>
+              Voer de volledige inhoud van <code>supabase/schema.sql</code> uit.
+            </li>
+            <li>
+              Controleer in Vercel <code>SUPABASE_URL</code> en{" "}
+              <code>SUPABASE_SECRET_KEY</code>.
+            </li>
+            <li>Start daarna een nieuwe deployment.</li>
+          </ol>
         </section>
       ) : (
         <>

@@ -1803,6 +1803,26 @@
   text-align: center;
 }
 
+.admin-setup-list {
+  max-width: 620px;
+  margin: 22px auto 0;
+  padding-left: 1.4rem;
+  color: #715d6d;
+  text-align: left;
+}
+
+.admin-setup-list li + li {
+  margin-top: 9px;
+}
+
+.admin-setup-list code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f3e8ff;
+  color: #6b3480;
+  font-size: .9em;
+}
+
 /* Boekweergave en printklare PDF */
 .print-story-loading {
   display: flex;
