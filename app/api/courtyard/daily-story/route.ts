@@ -27,8 +27,12 @@ export async function POST(req: NextRequest) {
     }
 
     const lengthInstruction =
-      child.age <= 4
-        ? "Schrijf 5 zeer korte zinnen met eenvoudige woorden."
+      child.age <= 3
+        ? "Schrijf 4 zeer korte, concrete zinnen met eenvoudige woorden en herkenbare herhaling."
+        : child.age <= 4
+          ? "Schrijf 5 zeer korte zinnen met eenvoudige woorden."
+          : child.age >= 10
+            ? "Schrijf 14 tot 18 verzorgde zinnen met rijkere woordenschat, meer gelaagdheid en een verrassende maar logische afloop."
         : child.id === "pauline"
           ? "Schrijf 7 korte, leesvriendelijke zinnen met veel witruimte. Gebruik hoogstens één moeilijk woord en leg het meteen eenvoudig uit."
           : child.age <= 7

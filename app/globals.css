@@ -348,6 +348,8 @@
 .profile-pauline .profile-avatar { background: #6f9a92; }
 .profile-ellie .profile-avatar { background: #ce8290; }
 .profile-mats .profile-avatar { background: #c99658; }
+.profile-axelle .profile-avatar { background: #786b9f; }
+.profile-louie .profile-avatar { background: #6d91a3; }
 
 .profile-name {
   color: #563851;
@@ -593,6 +595,8 @@
 .discoverer-ellie .discoverer-icon { background: #f6dfe4; color: #a65e70; }
 .discoverer-pauline .discoverer-icon { background: #dcebe7; color: #557d75; }
 .discoverer-mats .discoverer-icon { background: #f4e6cc; color: #9a6e35; }
+.discoverer-axelle .discoverer-icon { background: #e6e2f3; color: #665886; }
+.discoverer-louie .discoverer-icon { background: #e0eef2; color: #52798b; }
 
 .first-discoverer {
   margin-top: 20px;

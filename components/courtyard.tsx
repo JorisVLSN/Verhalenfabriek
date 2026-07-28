@@ -83,7 +83,7 @@ export function Courtyard() {
 
   const featuredResident = residentCanon[dailyPlan.speakerId];
   const subjectResident = residentCanon[dailyPlan.subjectId];
-  const canUseVoice = child.id === "mats";
+  const canUseVoice = child.id === "mats" || child.id === "louie";
 
   const openChat = (resident: ResidentCanon) => {
     setActiveResident(resident);

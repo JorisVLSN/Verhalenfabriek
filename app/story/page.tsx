@@ -58,7 +58,7 @@ function StoryContent() {
   const [showResidentPicker, setShowResidentPicker] = useState(false);
   const [selectedResident, setSelectedResident] = useState<Resident | null>(null);
   const [savedAt, setSavedAt] = useState<string | null>(null);
-  const canAnswerWithVoice = child.id === "mats";
+  const canAnswerWithVoice = child.id === "mats" || child.id === "louie";
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

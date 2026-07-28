@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { children } from "@/lib/children";
-import { getStoredStories } from "@/lib/story-storage";
+import { getAvailableStories } from "@/lib/story-storage";
 import { DiscovererCard } from "@/components/discoverer-card";
 import { ProfessorGreeting } from "@/components/professor-greeting";
 import { professorQuotes, QuoteCard } from "@/components/quote-card";
@@ -34,6 +34,16 @@ const discovererDetails: Record<
     colorClass: "discoverer-mats",
     emptyStory: "Een nieuw avontuur wacht op Mats",
   },
+  axelle: {
+    icon: "✧",
+    colorClass: "discoverer-axelle",
+    emptyStory: "Een nieuw avontuur wacht op Axelle",
+  },
+  louie: {
+    icon: "☁",
+    colorClass: "discoverer-louie",
+    emptyStory: "Een nieuw avontuur wacht op Louie",
+  },
 };
 
 export function DiscovererEntrance() {
@@ -50,17 +60,25 @@ export function DiscovererEntrance() {
   const [quoteIndex, setQuoteIndex] = useState(0);
 
   useEffect(() => {
-    const stories = getStoredStories();
-    const newestByChild: Record<string, string> = {};
+    let active = true;
+    void Promise.all(
+      children.map((child) => getAvailableStories(child.id))
+    ).then((storyCollections) => {
+      if (!active) return;
+      const newestByChild: Record<string, string> = {};
 
-    for (const story of stories) {
-      if (!newestByChild[story.childId]) {
-        newestByChild[story.childId] = story.title;
+      for (const story of storyCollections.flat()) {
+        if (!newestByChild[story.childId]) {
+          newestByChild[story.childId] = story.title;
+        }
       }
-    }
 
-    setLastStories(newestByChild);
+      setLastStories(newestByChild);
+    });
     setQuoteIndex(Math.floor(Math.random() * professorQuotes.length));
+    return () => {
+      active = false;
+    };
   }, []);
 
   const entries = useMemo(

@@ -64,5 +64,33 @@ export const children: Child[] = [
     storiesCompleted: 5,
     favoriteCharacter: "Beer Bram",
     preferences: { animals: 5, cars: 3, music: 2 }
+  },
+  {
+    id: "axelle",
+    name: "Axelle",
+    age: 11,
+    avatar: "A",
+    style:
+      "uitdagende en langere verhalen, rijkere woordenschat, onverwachte plotwendingen, complexere keuzes en veel ruimte om zelf te schrijven; leg een moeilijk woord kort uit wanneer dat nodig is",
+    themes: [],
+    readingLevel: "uitdagend en verdiepend",
+    sparkles: 0,
+    storiesCompleted: 0,
+    favoriteCharacter: "Nog te ontdekken",
+    preferences: {}
+  },
+  {
+    id: "louie",
+    name: "Louie",
+    age: 3,
+    avatar: "L",
+    style:
+      "volledig voorleesbaar, zeer korte zinnen, eenvoudige woorden, veel herhaling, concrete keuzes en antwoorden via gesproken berichten",
+    themes: [],
+    readingLevel: "voorleesmodus met heel korte stukjes",
+    sparkles: 0,
+    storiesCompleted: 0,
+    favoriteCharacter: "Nog te ontdekken",
+    preferences: {}
   }
 ];
